@@ -2,13 +2,14 @@ from django.shortcuts import render
 
 from django.http import HttpResponse
 from django.template.context_processors import request
-from .models import Testrun, Release
+from .models import Testrun, Release, Product
 import json
 from django.template import loader
 
 def index(request):
     
-    return HttpResponse("Hello, world. You're at the polls index.")
+    return render(request, 'dashapp/index.html')
+    #return HttpResponse("Hello, world. You're at the polls index.")
 
 def release_status(request, release_id):
     status = {}
@@ -83,6 +84,24 @@ def product_status(request):
     json_data = json.dumps(product_status)
     print(json_data)
     return HttpResponse(json_data)   
+    
+def get_product_latest_status(request, product_id):
+     
+    try:
+        id = int(product_id)
+        product = Product.objects.get(pk=id)
+        print(product)
+    except:
+        return HttpResponse("Product does not exist")
+    
+    r = Release.objects.filter(product_id=1).order_by('-release_id')[0]
+    p = Testrun.objects.filter(release_id=r, test_result='PASS').count()
+    f = Testrun.objects.filter(release_id=r, test_result='FAIL').count()
+    nt = Testrun.objects.filter(release_id=r, test_result='NOT_TESTED').count()
+    data = {'name':product.product_name, 'pass': p, 'fail': f, 'not_test': nt}
+    context = {'data' : data}
+        
+    return render(request, 'dashapp/index.html', context)
     
         
     
