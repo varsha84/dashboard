@@ -1,11 +1,11 @@
-# dashboard
-Test manager dash board
-This dashborad shall be use by test manager to see the progress report of any project.
+# Dashboard
+Test manager dashboard
+This dashborad shall be use by test manager to see the progress report of current ongoing projects.
 
 # Requirement
 To run this dashbaord. you must have python and django installed on your pc
 
-# run 
+# Run 
 got to the dashboard folder and run below command
 $  python manage.py runserver
 above command will start a local server
